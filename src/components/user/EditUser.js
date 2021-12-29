@@ -1,9 +1,9 @@
 import axios from 'axios'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-function AddUser() {
-
+function EditUser() {
+    const {id} = useParams()
     let navigate = useNavigate()
     const [user, setUser] = useState({
         name: "",
@@ -11,6 +11,10 @@ function AddUser() {
         email: "",
         phone: ""
     })
+
+    useEffect(() => {
+        loadUser()
+    }, []);
 
     const { name, username, email, phone } = user
 
@@ -21,20 +25,19 @@ function AddUser() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await axios.post("http://localhost:3003/users", user)
-        setUser({
-            name: "",
-            username: "",
-            email: "",
-            phone: ""
-        })
+        await axios.put(`http://localhost:3003/users/${id}`, user)
         navigate("/")
-        alert("User added successfully.")
+        alert("Data updated successfully..")
+    }
+
+    const loadUser = async () => {
+        const response = await axios.get(`http://localhost:3003/users/${id}`)
+        setUser(response.data)
     }
 
     return (
         <div>
-            <h1 className="text-center py-4">Add User</h1>
+            <h1 className="text-center py-4">Edit User</h1>
             <form onSubmit={e => handleSubmit(e)}>
                 <div className="mb-3">
                     <input type="text" className="form-control" placeholder="Enter Your Name" value={name} name="name" onChange={e => handleChange(e)} />
@@ -49,11 +52,11 @@ function AddUser() {
                     <input type="phone" className="form-control" placeholder="Enter your phone number" value={phone} name="phone" onChange={e => handleChange(e)} />
                 </div>
                 <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">Add User</button>
+                    <button type="submit" className="btn btn-primary">Update User</button>
                 </div>
             </form>
         </div>
     )
 }
 
-export default AddUser
+export default EditUser

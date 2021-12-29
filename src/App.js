@@ -7,6 +7,8 @@ import About from './components/About';
 import Contact from './components/Contact';
 import NotFound from './components/NotFound';
 import AddUser from './components/user/AddUser';
+import EditUser from './components/user/EditUser';
+import SeeUser from './components/user/SeeUser';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
             <Route exact path="/about" element={<About />} />
             <Route exact path="/contact" element={<Contact />} />
             <Route exact path="/adduser" element={<AddUser />} />
+            <Route exact path="/edituser/:id" element={<EditUser />} />
+            <Route exact path="/user/:id" element={<SeeUser/>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
